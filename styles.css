@@ -1,0 +1,462 @@
+:root {
+  --bg-page: #0a0a0c;
+  --menu-bg: #141b32;
+  --menu-border: rgba(255, 255, 255, 0.05);
+  --text: #ffffff;
+  --text-muted: rgba(255, 255, 255, 0.5);
+  --accent: #024ad8;
+  --btn-dark: #2f2f2f;
+  --font: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --menu-ms: 280ms;
+  --bg-ms: 320ms;
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --stripe-ms: 1200ms;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--bg-page);
+  color: var(--text);
+  font-family: var(--font);
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* —— Chrome (minimal, non-competing) —— */
+.chrome {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 24px 8px;
+}
+
+.chrome h1 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.chrome-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.chrome button {
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.85);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 160ms ease, border-color 160ms ease;
+}
+
+.chrome button:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.labels {
+  flex: 0 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 4px 24px 0;
+}
+
+.labels span {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+  text-align: center;
+}
+
+.stage {
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+  justify-items: center;
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 12px 24px 32px;
+}
+
+.hint {
+  flex: 0 0 auto;
+  text-align: center;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.35);
+  padding: 0 24px 20px;
+}
+
+/* —— Treatment panel —— */
+.treatment {
+  position: relative;
+  width: min(100%, 666px);
+  aspect-ratio: 666 / 501;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+  background: #0d1528;
+  user-select: none;
+}
+
+.panel-scale {
+  position: absolute;
+  inset: 0;
+  width: 666px;
+  height: 501px;
+  transform-origin: top left;
+  /* scale set via JS to match container */
+}
+
+.bg-stack {
+  position: absolute;
+  inset: 0;
+}
+
+.bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  pointer-events: none;
+  transition: opacity var(--bg-ms) var(--ease);
+}
+
+.bg-on {
+  opacity: 0;
+}
+
+.treatment.is-on .bg-on {
+  opacity: 1;
+}
+
+.treatment.is-on .bg-off {
+  opacity: 0;
+}
+
+/* Status hit — invisible but clickable over baked-in Off/On */
+.status-hit {
+  position: absolute;
+  left: 335px;
+  top: 18px;
+  width: 64px;
+  height: 32px;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 8px;
+  z-index: 3;
+}
+
+.status-hit:focus-visible {
+  outline: 2px solid rgba(2, 74, 216, 0.7);
+  outline-offset: 2px;
+}
+
+/* —— Dropdown menu —— */
+.menu {
+  position: absolute;
+  left: 334px;
+  top: 52px;
+  width: 253px;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px;
+  border-radius: 10px;
+  background: var(--menu-bg);
+  border: 1px solid var(--menu-border);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  transform-origin: top center;
+  transition:
+    opacity var(--menu-ms) var(--ease),
+    transform var(--menu-ms) var(--ease);
+}
+
+.menu[data-open="false"] {
+  opacity: 0;
+  transform: translateY(-6px) scale(0.96);
+  pointer-events: none;
+}
+
+.menu[data-open="true"] {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.menu-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 6px 8px;
+  border-radius: 8px;
+}
+
+.menu-row-label {
+  flex: 1;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: var(--text);
+}
+
+.toggle {
+  flex: 0 0 auto;
+  width: 40px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 999px;
+}
+
+.toggle img {
+  display: block;
+  width: 40px;
+  height: 24px;
+  pointer-events: none;
+}
+
+.menu-divider {
+  display: block;
+  width: 100%;
+  height: 1px;
+  border: 0;
+  margin: 0;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.menu-body {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow: hidden;
+  opacity: 1;
+  max-height: 160px;
+  transition:
+    opacity var(--menu-ms) var(--ease),
+    max-height var(--menu-ms) var(--ease);
+}
+
+.menu-body.is-collapsed {
+  opacity: 0;
+  max-height: 0;
+  pointer-events: none;
+}
+
+.menu-title {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px 8px 0;
+}
+
+.menu-title h2 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: var(--text);
+}
+
+.menu-title p {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+  color: var(--text-muted);
+  width: 220px;
+}
+
+.menu-title .time-emph {
+  color: var(--text);
+}
+
+.menu-action {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  width: 100%;
+}
+
+.btn {
+  appearance: none;
+  border: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 30px;
+  max-height: 30px;
+  padding: 0 16px;
+  border-radius: 24px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 18px;
+  color: var(--text);
+  transition: filter 160ms ease, transform 120ms ease;
+}
+
+.btn:hover {
+  filter: brightness(1.08);
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn-primary {
+  background: var(--accent);
+}
+
+.btn-dark {
+  background: var(--btn-dark);
+}
+
+/* Treatment A — progress / barber pole */
+.progress-wrap {
+  position: relative;
+  width: 100%;
+  height: 30px;
+  border-radius: 24px;
+  background: var(--btn-dark);
+  overflow: hidden;
+}
+
+.progress-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  border-radius: 99px;
+  background: var(--accent);
+  overflow: hidden;
+  transition: width 200ms linear;
+}
+
+.progress-stripes {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 700px;
+  height: 60px;
+  transform: translate(-50%, -50%);
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(0, 0, 0, 0.22) 0 10px,
+    transparent 10px 20px
+  );
+  animation: stripe-scroll var(--stripe-ms) linear infinite;
+  pointer-events: none;
+}
+
+@keyframes stripe-scroll {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 28px 0;
+  }
+}
+
+.progress-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 18px;
+  color: var(--text);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.progress-stop {
+  position: absolute;
+  right: 4px;
+  top: 3px;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  z-index: 2;
+  border-radius: 50%;
+}
+
+.progress-stop img {
+  display: block;
+  width: 24px;
+  height: 24px;
+  pointer-events: none;
+}
+
+.progress-stop:hover {
+  filter: brightness(1.15);
+}
+
+/* Content swap fade */
+.menu-phase {
+  transition: opacity calc(var(--menu-ms) * 0.7) var(--ease);
+}
+
+.menu-phase.is-exiting {
+  opacity: 0;
+}
+
+@media (max-width: 1100px) {
+  .stage {
+    grid-template-columns: 1fr;
+  }
+
+  .labels {
+    display: none;
+  }
+}
