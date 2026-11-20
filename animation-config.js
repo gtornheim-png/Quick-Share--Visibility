@@ -16,8 +16,10 @@ export const ANIMATION = {
 export const TIMER = {
   /** Full visibility window in real seconds (matches "10 minutes") */
   durationSec: 10 * 60,
-  /** Demo speed multiplier — 10 = 10 real minutes play in 60s */
-  demoSpeed: 10,
+  /** Treatment A: accelerated demo (10 = 10 real minutes play in 60s) */
+  demoSpeedA: 10,
+  /** Treatment B: 1 = real-time seconds */
+  demoSpeedB: 1,
   /** UI update interval (ms) */
   tickMs: 100,
 };

@@ -111,7 +111,7 @@ function createTreatment(root, treatment) {
       `;
       actionEl.querySelector(".progress-stop")?.addEventListener("click", (e) => {
         e.stopPropagation();
-        goOff();
+        goAllow();
       });
     } else {
       const b = formatTreatmentB(state.remainingMs);
@@ -124,7 +124,7 @@ function createTreatment(root, treatment) {
       `;
       actionEl.querySelector(".turn-off")?.addEventListener("click", (e) => {
         e.stopPropagation();
-        goOff();
+        goAllow();
       });
     }
   }
@@ -171,7 +171,8 @@ function createTreatment(root, treatment) {
 
   function tick(ts) {
     if (state.lastTs == null) state.lastTs = ts;
-    const dt = (ts - state.lastTs) * TIMER.demoSpeed;
+    const speed = treatment === "A" ? TIMER.demoSpeedA : TIMER.demoSpeedB;
+    const dt = (ts - state.lastTs) * speed;
     state.lastTs = ts;
     state.remainingMs = Math.max(0, state.remainingMs - dt);
 
