@@ -135,7 +135,8 @@ body {
   border-radius: 18px;
   overflow: hidden;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
-  background: #0d1528;
+  /* Match flattened screenshot chrome so no darker panel peeks through */
+  background: rgb(39, 47, 71);
   user-select: none;
 }
 
@@ -151,6 +152,7 @@ body {
 .bg-stack {
   position: absolute;
   inset: 0;
+  background: rgb(39, 47, 71);
 }
 
 .bg {
@@ -160,19 +162,21 @@ body {
   height: 100%;
   object-fit: fill;
   pointer-events: none;
-  transition: opacity var(--bg-ms) var(--ease);
+}
+
+/* Off stays fully opaque underneath; only On fades on top.
+   Screenshots are flattened (no alpha) so opacity never reveals a darker panel. */
+.bg-off {
+  opacity: 1;
 }
 
 .bg-on {
   opacity: 0;
+  transition: opacity var(--bg-ms) var(--ease);
 }
 
 .treatment.is-on .bg-on {
   opacity: 1;
-}
-
-.treatment.is-on .bg-off {
-  opacity: 0;
 }
 
 /* Status hit — invisible but clickable over baked-in Off/On */

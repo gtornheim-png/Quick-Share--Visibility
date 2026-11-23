@@ -6,7 +6,7 @@ export const ANIMATION = {
   /** Menu open / close / content swap */
   menuMs: 280,
   /** Background off ↔ on crossfade */
-  backgroundMs: 320,
+  backgroundMs: 1000,
   /** Easing for UI transitions */
   easing: "cubic-bezier(0.2, 0.8, 0.2, 1)",
   /** Barber-pole stripe scroll (Treatment A) */
