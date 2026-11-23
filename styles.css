@@ -8,6 +8,8 @@
   --btn-dark: #2f2f2f;
   --font: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   --menu-ms: 280ms;
+  --content-ms: 200ms;
+  --content-slide: 6px;
   --bg-ms: 320ms;
   --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
   --stripe-ms: 1200ms;
@@ -285,17 +287,31 @@ body {
   flex-direction: column;
   width: 100%;
   overflow: hidden;
-  opacity: 1;
   max-height: 160px;
-  transition:
-    opacity var(--menu-ms) var(--ease),
-    max-height var(--menu-ms) var(--ease);
+  transition: max-height var(--menu-ms) var(--ease);
 }
 
 .menu-body.is-collapsed {
-  opacity: 0;
   max-height: 0;
   pointer-events: none;
+}
+
+/* Content block: fade + slight downward settle */
+.menu-body-inner {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity var(--content-ms) var(--ease),
+    transform var(--content-ms) var(--ease);
+}
+
+.menu-body.is-collapsed .menu-body-inner,
+.menu-body.is-revealing .menu-body-inner {
+  opacity: 0;
+  transform: translateY(calc(var(--content-slide) * -1));
 }
 
 .menu-title {

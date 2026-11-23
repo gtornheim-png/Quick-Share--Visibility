@@ -7,6 +7,8 @@ const DURATION_MS = TIMER.durationSec * 1000;
 function applyCssVars() {
   const root = document.documentElement;
   root.style.setProperty("--menu-ms", `${ANIMATION.menuMs}ms`);
+  root.style.setProperty("--content-ms", `${ANIMATION.contentMs}ms`);
+  root.style.setProperty("--content-slide", `${ANIMATION.contentSlidePx}px`);
   root.style.setProperty("--bg-ms", `${ANIMATION.backgroundMs}ms`);
   root.style.setProperty("--ease", ANIMATION.easing);
   root.style.setProperty("--stripe-ms", `${ANIMATION.stripeScrollMs}ms`);
@@ -143,30 +145,43 @@ function createTreatment(root, treatment) {
     });
   }
 
+  function playContentReveal() {
+    const expand = body.classList.contains("is-collapsed");
+    body.classList.add("is-revealing");
+    if (expand) body.classList.remove("is-collapsed");
+    // Double rAF so the browser paints the hidden state before transitioning in
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        body.classList.remove("is-revealing");
+      });
+    });
+  }
+
   function renderPhase() {
     if (state.phase === "off") {
       setOnBackground(false);
       setToggleVisual(false);
-      body.classList.add("is-collapsed");
-      // Clear after collapse so height animates out cleanly
+      // Fade/slide content out, then collapse height
+      body.classList.add("is-revealing");
       window.setTimeout(() => {
-        if (state.phase === "off") {
-          titleEl.innerHTML = "";
-          actionEl.innerHTML = "";
-        }
-      }, ANIMATION.menuMs);
+        if (state.phase !== "off") return;
+        body.classList.add("is-collapsed");
+        titleEl.innerHTML = "";
+        actionEl.innerHTML = "";
+      }, ANIMATION.contentMs);
       return;
     }
 
     setOnBackground(true);
     setToggleVisual(true);
-    body.classList.remove("is-collapsed");
 
     if (state.phase === "allow") {
       renderAllowContent();
     } else {
       renderActiveContent();
     }
+
+    playContentReveal();
   }
 
   function tick(ts) {

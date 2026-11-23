@@ -3,8 +3,12 @@
  * All durations are milliseconds unless noted.
  */
 export const ANIMATION = {
-  /** Menu open / close / content swap */
+  /** Menu open / close height */
   menuMs: 280,
+  /** Dropdown content fade + slide */
+  contentMs: 200,
+  /** Content enters from this many px above */
+  contentSlidePx: 6,
   /** Background off ↔ on crossfade */
   backgroundMs: 1000,
   /** Easing for UI transitions */
