@@ -3,10 +3,13 @@
  * All durations are milliseconds unless noted.
  */
 export const ANIMATION = {
-  /** Menu open / close height */
-  menuMs: 280,
-  /** Dropdown content fade + slide */
+  /** Menu open height — keep in sync with contentMs */
+  menuMs: 400,
+  /** Dropdown content fade + slide (open) */
   contentMs: 400,
+  /** Menu close height / content hide (100ms shorter than open) */
+  menuCloseMs: 300,
+  contentCloseMs: 300,
   /** Content enters from this many px above */
   contentSlidePx: 6,
   /** Background off ↔ on crossfade */

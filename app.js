@@ -8,6 +8,8 @@ function applyCssVars() {
   const root = document.documentElement;
   root.style.setProperty("--menu-ms", `${ANIMATION.menuMs}ms`);
   root.style.setProperty("--content-ms", `${ANIMATION.contentMs}ms`);
+  root.style.setProperty("--menu-close-ms", `${ANIMATION.menuCloseMs}ms`);
+  root.style.setProperty("--content-close-ms", `${ANIMATION.contentCloseMs}ms`);
   root.style.setProperty("--content-slide", `${ANIMATION.contentSlidePx}px`);
   root.style.setProperty("--bg-ms", `${ANIMATION.backgroundMs}ms`);
   root.style.setProperty("--ease", ANIMATION.easing);
@@ -148,7 +150,14 @@ function createTreatment(root, treatment) {
     });
   }
 
+  let hideTimer = null;
+
   function playContentReveal() {
+    if (hideTimer != null) {
+      window.clearTimeout(hideTimer);
+      hideTimer = null;
+    }
+    body.classList.remove("is-closing");
     const expand = body.classList.contains("is-collapsed");
     body.classList.add("is-revealing");
     if (expand) body.classList.remove("is-collapsed");
@@ -160,18 +169,33 @@ function createTreatment(root, treatment) {
     });
   }
 
+  /** Mirror of open: fade/slide up + height collapse run together (shorter close timing) */
+  function playContentHide() {
+    if (hideTimer != null) {
+      window.clearTimeout(hideTimer);
+      hideTimer = null;
+    }
+    body.classList.add("is-closing");
+    body.classList.add("is-revealing");
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        body.classList.add("is-collapsed");
+      });
+    });
+    const doneMs = Math.max(ANIMATION.contentCloseMs, ANIMATION.menuCloseMs);
+    hideTimer = window.setTimeout(() => {
+      hideTimer = null;
+      if (state.phase !== "off") return;
+      titleEl.innerHTML = "";
+      actionEl.replaceChildren();
+    }, doneMs);
+  }
+
   function renderPhase() {
     if (state.phase === "off") {
       setOnBackground(false);
       setToggleVisual(false);
-      // Fade/slide content out, then collapse height
-      body.classList.add("is-revealing");
-      window.setTimeout(() => {
-        if (state.phase !== "off") return;
-        body.classList.add("is-collapsed");
-        titleEl.innerHTML = "";
-        actionEl.innerHTML = "";
-      }, ANIMATION.contentMs);
+      playContentHide();
       return;
     }
 

@@ -7,8 +7,10 @@
   --accent: #024ad8;
   --btn-dark: #2f2f2f;
   --font: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  --menu-ms: 280ms;
-  --content-ms: 200ms;
+  --menu-ms: 400ms;
+  --content-ms: 400ms;
+  --menu-close-ms: 300ms;
+  --content-close-ms: 300ms;
   --content-slide: 6px;
   --bg-ms: 320ms;
   --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -283,20 +285,27 @@ body {
 }
 
 .menu-body {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: 1fr;
   width: 100%;
-  overflow: hidden;
-  max-height: 160px;
-  transition: max-height var(--menu-ms) var(--ease);
+  transition: grid-template-rows var(--menu-ms) var(--ease);
+}
+
+.menu-body.is-closing {
+  transition-duration: var(--menu-close-ms);
 }
 
 .menu-body.is-collapsed {
-  max-height: 0;
+  grid-template-rows: 0fr;
   pointer-events: none;
 }
 
-/* Content block: fade + slight downward settle */
+.menu-body-clip {
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* Content block: fade + slight downward settle (open) / upward lift (close) */
 .menu-body-inner {
   display: flex;
   flex-direction: column;
@@ -306,6 +315,10 @@ body {
   transition:
     opacity var(--content-ms) var(--ease),
     transform var(--content-ms) var(--ease);
+}
+
+.menu-body.is-closing .menu-body-inner {
+  transition-duration: var(--content-close-ms), var(--content-close-ms);
 }
 
 .menu-body.is-collapsed .menu-body-inner,
