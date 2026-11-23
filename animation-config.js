@@ -17,6 +17,11 @@ export const ANIMATION = {
   stripeScrollMs: 1200,
 };
 
+export const COPY = {
+  /** Treatment B active-state CTA */
+  treatmentBStopLabel: "Stop",
+};
+
 export const TIMER = {
   /** Full visibility window in real seconds (matches "10 minutes") */
   durationSec: 10 * 60,

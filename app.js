@@ -1,4 +1,4 @@
-import { ANIMATION, TIMER, LAYOUT } from "./animation-config.js";
+import { ANIMATION, TIMER, LAYOUT, COPY } from "./animation-config.js";
 
 /** @typedef {"off" | "allow" | "active"} Phase */
 
@@ -121,13 +121,16 @@ function createTreatment(root, treatment) {
         <h2>Visible to everyone</h2>
         <p>${b.prefix}<span class="time-emph">${b.emph}</span></p>
       `;
-      actionEl.innerHTML = `
-        <button type="button" class="btn btn-dark turn-off">Turn off</button>
-      `;
-      actionEl.querySelector(".turn-off")?.addEventListener("click", (e) => {
+      actionEl.replaceChildren();
+      const stopBtn = document.createElement("button");
+      stopBtn.type = "button";
+      stopBtn.className = "btn btn-dark stop-btn";
+      stopBtn.textContent = COPY.treatmentBStopLabel;
+      stopBtn.addEventListener("click", (e) => {
         e.stopPropagation();
         goAllow();
       });
+      actionEl.appendChild(stopBtn);
     }
   }
 
