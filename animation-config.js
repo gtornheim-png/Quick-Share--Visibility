@@ -6,7 +6,7 @@ export const ANIMATION = {
   /** Menu open / close height */
   menuMs: 280,
   /** Dropdown content fade + slide */
-  contentMs: 200,
+  contentMs: 400,
   /** Content enters from this many px above */
   contentSlidePx: 6,
   /** Background off ↔ on crossfade */

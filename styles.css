@@ -322,6 +322,8 @@ body {
 }
 
 .menu-title h2 {
+  /* Hidden for now — markup kept in app.js for easy restore */
+  display: none;
   margin: 0;
   font-size: 14px;
   font-weight: 400;
