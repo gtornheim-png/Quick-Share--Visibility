@@ -49,20 +49,44 @@ body {
   padding: 16px 24px 8px;
 }
 
-.chrome h1 {
-  margin: 0;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tab-btn {
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: transparent;
   color: rgba(255, 255, 255, 0.55);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 7px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+
+.tab-btn:hover {
+  color: rgba(255, 255, 255, 0.85);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.tab-btn.is-active {
+  color: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.22);
 }
 
 .chrome-actions {
   display: flex;
   gap: 8px;
+  flex: 0 0 auto;
 }
 
-.chrome button {
+.chrome-actions button {
   appearance: none;
   border: 1px solid rgba(255, 255, 255, 0.12);
   background: rgba(255, 255, 255, 0.06);
@@ -70,15 +94,27 @@ body {
   font: inherit;
   font-size: 12px;
   font-weight: 600;
-  padding: 6px 14px;
-  border-radius: 999px;
+  padding: 7px 14px;
+  border-radius: 6px;
   cursor: pointer;
   transition: background 160ms ease, border-color 160ms ease;
 }
 
-.chrome button:hover {
+.chrome-actions button:hover {
   background: rgba(255, 255, 255, 0.12);
   border-color: rgba(255, 255, 255, 0.22);
+}
+
+.tab-panel {
+  flex: 1 1 auto;
+  display: none;
+  flex-direction: column;
+  min-height: 0;
+  width: 100%;
+}
+
+.tab-panel.is-active {
+  display: flex;
 }
 
 .prototype {
@@ -113,7 +149,6 @@ body {
 .stage {
   flex: 0 0 auto;
   display: grid;
-  grid-template-columns: 1fr 1fr;
   gap: 24px;
   align-items: center;
   justify-items: center;
@@ -123,12 +158,28 @@ body {
   padding: 12px 24px 0;
 }
 
-.hint {
-  flex: 0 0 auto;
-  text-align: center;
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.35);
-  padding: 0 24px 20px;
+.stage-compare {
+  grid-template-columns: 1fr 1fr;
+}
+
+.stage-multi {
+  grid-template-columns: minmax(280px, 666px) auto;
+  gap: 28px 36px;
+  max-width: 1480px;
+  align-items: center;
+  justify-content: center;
+  padding-top: 28px;
+  padding-bottom: 24px;
+}
+
+.multi-pc {
+  width: min(100%, 666px);
+}
+
+.multi-phones {
+  display: flex;
+  align-items: center;
+  gap: 28px;
 }
 
 /* —— Treatment panel —— */
@@ -496,12 +547,93 @@ body {
   opacity: 0;
 }
 
+/* —— Android storytelling devices —— */
+.android-device {
+  position: relative;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: auto;
+}
+
+.android-label {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(100% + 10px);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+  text-align: center;
+}
+
+.android-frame {
+  position: relative;
+  /* Width/height synced to PC panel via ResizeObserver in app.js */
+  width: calc(501px * 412 / 919);
+  height: 501px;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #e8eaed;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 18px 40px rgba(0, 0, 0, 0.45);
+}
+
+.android-screen {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+/* Empty stays opaque underneath; only the “PC visible” layer fades */
+.android-screen-empty {
+  opacity: 1;
+}
+
+.android-screen-pc {
+  opacity: 0;
+  transition: opacity 320ms var(--ease);
+}
+
+.android-device[data-sees-pc="true"] .android-screen-pc {
+  opacity: 1;
+}
+
+@media (max-width: 1200px) {
+  .stage-multi {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+}
+
 @media (max-width: 1100px) {
-  .stage {
+  .stage-compare {
     grid-template-columns: 1fr;
   }
 
   .labels {
     display: none;
+  }
+
+  .multi-phones {
+    gap: 16px;
+  }
+}
+
+@media (max-width: 720px) {
+  .chrome {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .android-frame {
+    border-radius: 14px;
   }
 }

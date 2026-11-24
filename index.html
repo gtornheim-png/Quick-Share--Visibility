@@ -8,129 +8,63 @@
   </head>
   <body>
     <header class="chrome">
-      <h1>NearSense · Cursor motion comparison</h1>
+      <nav class="tabs" role="tablist" aria-label="Prototype views">
+        <button
+          type="button"
+          class="tab-btn is-active"
+          role="tab"
+          data-tab="compare"
+          aria-selected="true"
+        >
+          Side-by-side
+        </button>
+        <button
+          type="button"
+          class="tab-btn"
+          role="tab"
+          data-tab="multi-a"
+          aria-selected="false"
+        >
+          Treatment A
+        </button>
+        <button
+          type="button"
+          class="tab-btn"
+          role="tab"
+          data-tab="multi-b"
+          aria-selected="false"
+        >
+          Treatment B
+        </button>
+      </nav>
       <div class="chrome-actions">
         <button type="button" id="reset-btn">Reset</button>
       </div>
     </header>
 
-    <div class="prototype">
-      <div class="labels" aria-hidden="true">
-        <span>Treatment A — Barber Pole</span>
-        <span>Treatment B — Inline Countdown</span>
-      </div>
+    <div
+      class="tab-panel is-active"
+      id="panel-compare"
+      data-tab="compare"
+      role="tabpanel"
+    ></div>
 
-      <main class="stage">
-      <!-- Treatment A -->
-      <section
-        class="treatment"
-        id="treatment-a"
-        aria-label="Treatment A — barber pole"
-      >
-        <div class="panel-scale">
-          <div class="bg-stack">
-            <img
-              class="bg bg-off"
-              src="./assets/background-off.png"
-              width="666"
-              height="501"
-              alt=""
-              draggable="false"
-            />
-            <img
-              class="bg bg-on"
-              src="./assets/background-on.png"
-              width="666"
-              height="501"
-              alt=""
-              draggable="false"
-            />
-          </div>
+    <div
+      class="tab-panel"
+      id="panel-multi-a"
+      data-tab="multi-a"
+      role="tabpanel"
+      hidden
+    ></div>
 
-          <button
-            type="button"
-            class="status-hit"
-            aria-label="Toggle NearSense menu"
-          ></button>
+    <div
+      class="tab-panel"
+      id="panel-multi-b"
+      data-tab="multi-b"
+      role="tabpanel"
+      hidden
+    ></div>
 
-          <div class="menu" data-open="true" role="dialog" aria-label="NearSense">
-            <div class="menu-row">
-              <p class="menu-row-label">NearSense</p>
-              <button type="button" class="toggle" aria-pressed="false" aria-label="NearSense power">
-                <img src="./assets/toggle-off.svg" alt="" width="40" height="24" />
-              </button>
-            </div>
-            <div class="menu-body is-collapsed">
-              <div class="menu-body-clip">
-                <div class="menu-body-inner">
-                  <hr class="menu-divider" />
-                  <div class="menu-title"></div>
-                  <div class="menu-action"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Treatment B -->
-      <section
-        class="treatment"
-        id="treatment-b"
-        aria-label="Treatment B — Inline"
-      >
-        <div class="panel-scale">
-          <div class="bg-stack">
-            <img
-              class="bg bg-off"
-              src="./assets/background-off.png"
-              width="666"
-              height="501"
-              alt=""
-              draggable="false"
-            />
-            <img
-              class="bg bg-on"
-              src="./assets/background-on.png"
-              width="666"
-              height="501"
-              alt=""
-              draggable="false"
-            />
-          </div>
-
-          <button
-            type="button"
-            class="status-hit"
-            aria-label="Toggle NearSense menu"
-          ></button>
-
-          <div class="menu" data-open="true" role="dialog" aria-label="NearSense">
-            <div class="menu-row">
-              <p class="menu-row-label">NearSense</p>
-              <button type="button" class="toggle" aria-pressed="false" aria-label="NearSense power">
-                <img src="./assets/toggle-off.svg" alt="" width="40" height="24" />
-              </button>
-            </div>
-            <div class="menu-body is-collapsed">
-              <div class="menu-body-clip">
-                <div class="menu-body-inner">
-                  <hr class="menu-divider" />
-                  <div class="menu-title"></div>
-                  <div class="menu-action"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      </main>
-    </div>
-
-    <p class="hint">
-      Click Off/On · toggle NearSense on · Allow for 10 minutes · compare timer UI · Reset anytime
-    </p>
-
-    <script type="module" src="./app.js?v=stop-cta"></script>
+    <script type="module" src="./app.js?v=visual-polish"></script>
   </body>
 </html>
