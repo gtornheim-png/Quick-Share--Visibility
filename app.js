@@ -75,11 +75,10 @@ function mountMultiDevice(panel, treatment, tabId, title) {
     },
   });
 
-  // Android frames ~20% taller than the PC panel
-  const ANDROID_SCALE = 1.2;
+  // Match Android frame height to the PC panel height
   const frames = panel.querySelectorAll(".android-frame");
   const syncPhoneHeight = () => {
-    const h = pcRoot.getBoundingClientRect().height * ANDROID_SCALE;
+    const h = pcRoot.getBoundingClientRect().height;
     if (h <= 0) return;
     frames.forEach((frame) => {
       frame.style.height = `${h}px`;
