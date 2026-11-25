@@ -572,9 +572,9 @@ body {
 
 .android-frame {
   position: relative;
-  /* Width/height synced to PC panel via ResizeObserver in app.js */
-  width: calc(501px * 412 / 919);
-  height: 501px;
+  /* Fallback before JS sync; ~20% larger than PC (501 × 1.2) */
+  width: calc(601.2px * 412 / 919);
+  height: 601.2px;
   border-radius: 18px;
   overflow: hidden;
   background: #e8eaed;
